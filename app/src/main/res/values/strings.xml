@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BaseMVVM</string>
+    <string name="no_internet">Không có kết nối mạng</string>
+    <string name="unknown_internet">Lỗi không xác đinh</string>
 </resources>

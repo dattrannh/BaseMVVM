@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/exoplayer_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        app:controller_layout_id="@layout/control_player"
+        app:fastforward_increment="15000"
+        app:rewind_increment="15000"
+        app:show_timeout="3000" />
+
+    <include layout="@layout/sub_view_play"></include>
+
+    <ImageView
+        android:id="@+id/mobile_image_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_main"
+        android:visibility="gone" />
+</FrameLayout>
