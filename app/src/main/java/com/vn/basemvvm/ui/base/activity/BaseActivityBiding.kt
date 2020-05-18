@@ -28,7 +28,7 @@ abstract class BaseActivityBiding<T: ViewDataBinding, V: BaseViewModel> : BaseAc
     }
 
     override fun onDestroy() {
-        viewModel.progressDialog.removeObservers(this)
+        dataBinding.unbind()
         super.onDestroy()
     }
 }

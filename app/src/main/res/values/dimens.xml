@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ic_mobile_play">24dp</dimen>
+    <dimen name="main_item_radius">4dp</dimen>
 
 </resources>

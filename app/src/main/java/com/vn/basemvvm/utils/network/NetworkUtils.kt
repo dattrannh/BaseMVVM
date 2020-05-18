@@ -9,22 +9,17 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
 import com.vn.basemvvm.App
+import com.vn.basemvvm.utils.AppConfig
 import com.vn.basemvvm.utils.rx.RxBus
 
 
 object NetworkUtils {
 
-    lateinit var connectivityManager: ConnectivityManager
-
-
-    fun setup(context: Context) {
-        connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    }
 
     @JvmStatic
     @Suppress("DEPRECATION")
     fun isNetworkConnected(): Boolean {
-        val cm = connectivityManager
+        val cm = AppConfig.connectivityManager
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val networkCapabilities = cm.activeNetwork ?: return false
             val nc = cm.getNetworkCapabilities(networkCapabilities) ?: return false

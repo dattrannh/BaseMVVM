@@ -1,13 +1,12 @@
 package com.vn.basemvvm.extension
 
 import android.app.Activity
-import android.content.Context
-import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.vn.basemvvm.utils.AppConfig.dpToPx
 
 fun <T : View> Activity.bind(@IdRes idRes: Int): Lazy<T> {
     @Suppress("UNCHECKED_CAST")
@@ -52,6 +51,20 @@ var View.isHidden: Boolean
     }
     set(value) {
         if (visibility == View.VISIBLE && value) {
+            visibility = View.GONE
+        } else if (visibility == View.GONE && !value) {
+            visibility = View.VISIBLE
+        } else {
+
+        }
+    }
+
+var View.isHiddenAnimate: Boolean
+    get() {
+        return visibility == View.GONE
+    }
+    set(value) {
+        if (visibility == View.VISIBLE && value) {
             animate().cancel()
             animate().alpha(0f).setDuration(300).withEndAction {
                 visibility = View.GONE
@@ -69,15 +82,4 @@ var View.isHidden: Boolean
 inline fun <reified T : ViewGroup.LayoutParams> View.layoutParams(block: T.() -> Unit) {
     if (layoutParams is T) block(layoutParams as T)
 }
-
-fun View.dpToPx(dp: Float): Int = context.dpToPx(dp)
-
-fun Activity.dpToPx(dp: Float): Int =
-    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
-
-fun Context.dpToPx(dp: Float): Int =
-    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
-
-fun Fragment.dpToPx(dp: Float): Int =
-    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
 

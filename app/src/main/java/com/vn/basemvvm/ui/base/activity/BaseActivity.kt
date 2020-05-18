@@ -19,9 +19,10 @@ import com.vn.basemvvm.R
 import com.vn.basemvvm.data.model.ErrorResponse
 import com.vn.basemvvm.extension.transitionInLeft
 import com.vn.basemvvm.extension.transitionOutLeft
+import com.vn.basemvvm.ui.base.dialog.ConfirmDialog
 import com.vn.basemvvm.ui.base.dialog.ProgressDialog
-import com.vn.basemvvm.utils.rx.RxBus
 import com.vn.basemvvm.utils.network.NetworkUtils
+import com.vn.basemvvm.utils.rx.RxBus
 import com.vn.basemvvm.utils.rx.RxBus.STATUS_CODE
 import dagger.android.AndroidInjection
 import java.util.*
@@ -36,13 +37,15 @@ abstract class BaseActivity : AppCompatActivity() {
     private var listTagFragments = ArrayDeque<String>()
     private val mHandler = Handler(Looper.getMainLooper())
     var delayMillis = 500L
-
+    private var progressDialog: ProgressDialog? = null
+    private var isLoading = false
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         mView = layoutInflater.inflate(layoutId, null)
         setContentView(mView)
         mHandler.postDelayed({
@@ -62,7 +65,11 @@ abstract class BaseActivity : AppCompatActivity() {
                 val string = if (!NetworkUtils.isNetworkConnected())
                     getString(R.string.no_internet)
                  else getString(R.string.unknown_internet)
-                Toast.makeText(applicationContext, string, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(applicationContext, string, Toast.LENGTH_SHORT).show()
+                dismissLoading()
+                ConfirmDialog.show(supportFragmentManager, message = string, callback = {
+                    showLoading()
+                })
             } else {
                 handleResponse(statusCode, error.cause)
             }
@@ -82,6 +89,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         mHandler.removeCallbacksAndMessages(null)
+        supportFragmentManager.fragments.forEach {
+            supportFragmentManager.beginTransaction().remove(it).commit()
+        }
         super.onDestroy()
     }
 
@@ -163,13 +173,16 @@ abstract class BaseActivity : AppCompatActivity() {
     //region Progress bar
 
     fun showLoading(touchOutside: Boolean, canGoBack: Boolean) {
-        synchronized(ProgressDialog::class) {
-            val dialog = (supportFragmentManager.findFragmentByTag(ProgressDialog::class.java.simpleName) as? ProgressDialog) ?: ProgressDialog()
-            if (!dialog.isAdded) {
-                dialog.canceledOnTouchOutside = touchOutside
-                dialog.canGoBack = canGoBack
-                dialog.show(supportFragmentManager, ProgressDialog::class.java.simpleName)
-            }
+        if (isLoading) {
+            return
+        }
+        isLoading = true
+        val dialog = progressDialog ?: ProgressDialog()
+        progressDialog = dialog
+        if (!dialog.isAdded) {
+            dialog.canceledOnTouchOutside = touchOutside
+            dialog.canGoBack = canGoBack
+            dialog.show(supportFragmentManager, ProgressDialog::class.java.simpleName)
         }
     }
 
@@ -178,8 +191,11 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun dismissLoading() {
-        val dialog = supportFragmentManager.findFragmentByTag(ProgressDialog::class.java.simpleName) as? ProgressDialog
-        dialog?.dismiss()
+        if (!isLoading) {
+            return
+        }
+        isLoading = false
+        progressDialog?.dismiss()
     }
 
     //endregion

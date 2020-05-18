@@ -2,6 +2,7 @@ package com.vn.basemvvm.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.vn.basemvvm.ui.TempViewModel
 import com.vn.basemvvm.ui.blank.BlankViewModel
 import com.vn.basemvvm.ui.main.MainViewModel
 import dagger.Binds
@@ -24,5 +25,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(BlankViewModel::class)
     abstract fun blankViewModel(viewModel: BlankViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TempViewModel::class)
+    abstract fun tempViewModel(viewModel: TempViewModel): ViewModel
 
 }

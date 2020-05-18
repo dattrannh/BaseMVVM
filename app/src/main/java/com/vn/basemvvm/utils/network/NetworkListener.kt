@@ -13,11 +13,11 @@ import android.os.Build
 import androidx.lifecycle.LiveData
 import android.net.NetworkCapabilities
 import com.google.gson.reflect.TypeToken
+import com.vn.basemvvm.utils.AppConfig
 import java.lang.ref.WeakReference
 
 class NetworkListener(context: Context) : LiveData<Boolean>() {
 
-    private val connectivityManager: ConnectivityManager = context.applicationContext.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
     private var weakReference: WeakReference<Context>? = WeakReference(context.applicationContext)
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
@@ -41,7 +41,7 @@ class NetworkListener(context: Context) : LiveData<Boolean>() {
     override fun onInactive() {
         super.onInactive()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectivityManager.unregisterNetworkCallback(networkCallback)
+            AppConfig.connectivityManager.unregisterNetworkCallback(networkCallback)
         } else {
             weakReference?.get()?.unregisterReceiver(networkReceiver)
         }
@@ -53,7 +53,7 @@ class NetworkListener(context: Context) : LiveData<Boolean>() {
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
-        connectivityManager.registerNetworkCallback(builder.build(), networkCallback)
+        AppConfig.connectivityManager.registerNetworkCallback(builder.build(), networkCallback)
     }
 
     private val networkReceiver = object : BroadcastReceiver() {
@@ -64,7 +64,7 @@ class NetworkListener(context: Context) : LiveData<Boolean>() {
 
     @Suppress("DEPRECATION")
     private fun updateConnection() {
-        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        val activeNetwork: NetworkInfo? = AppConfig.connectivityManager.activeNetworkInfo
         postValue(activeNetwork?.isConnectedOrConnecting == true)
     }
 }

@@ -11,4 +11,5 @@
     <color name="gray_main">#37474f</color>
     <color name="black_same">#333333</color>
     <color name="translucent_white">#3FFFFFFF</color>
+    <color name="main_bg_ripple">#e1e1e1</color>
 </resources>

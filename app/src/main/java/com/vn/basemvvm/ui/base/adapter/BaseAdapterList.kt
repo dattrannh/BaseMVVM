@@ -1,38 +1,44 @@
 package com.vn.basemvvm.ui.base.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.vn.basemvvm.data.model.Post
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 
-abstract class BaseAdapterList<D: Any, T: BaseViewHolder<D>>: RecyclerView.Adapter<T>() {
+open class BaseAdapterList<D: Any, V: ViewDataBinding>(val layoutId: ((Int) -> Int),
+                                                       val onBind: ((V, D) -> Unit)? = null) :
+    RecyclerView.Adapter<BaseAdapterList.BaseViewHolder<D, V>>() {
 
     private var listData = mutableListOf<D>()
     var onClickedItem: ((Int, D) -> Unit)? = null
 
     override fun getItemCount(): Int = listData.size
 
-    abstract fun layoutId(): Int
-
-    @Suppress("UNCHECKED_CAST")
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
-        val inflate = LayoutInflater.from(parent.context)
-        val binding: ViewDataBinding = DataBindingUtil.inflate(inflate, layoutId(), parent, false)
-        val superclass = javaClass.genericSuperclass!!
-        val parameterized = superclass as ParameterizedType
-        val type = parameterized.actualTypeArguments[1]
-        val con = (type as Class<T>).constructors.first()
-        return con.newInstance(binding) as T
+    override fun getItemViewType(position: Int): Int {
+        return layoutId(position)
     }
-    override fun onBindViewHolder(holder: T, position: Int) {
-        holder.onBind(data = listData[position])
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<D, V> {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding: V = DataBindingUtil.inflate(inflater, viewType, parent, false)
+        return BaseViewHolder(binding)
+    }
+
+
+    override fun onBindViewHolder(holder: BaseViewHolder<D, V>, position: Int) {
+        val item = listData[position]
+        holder.onBind(item)
+        onBind?.invoke(holder.dataBinding, item)
         holder.itemView.setOnClickListener {
             onClickedItem?.invoke(position, listData[position])
+        }
+    }
+
+    open class BaseViewHolder<D: Any, V: ViewDataBinding>(open val dataBinding: V) : RecyclerView.ViewHolder(dataBinding.root) {
+
+        fun onBind(data: D) {
+
         }
     }
 
@@ -56,4 +62,10 @@ abstract class BaseAdapterList<D: Any, T: BaseViewHolder<D>>: RecyclerView.Adapt
         listData.clear()
         notifyDataSetChanged()
     }
+
+    override fun onViewDetachedFromWindow(holder: BaseViewHolder<D, V>) {
+        onClickedItem = null
+        super.onViewDetachedFromWindow(holder)
+    }
 }
+

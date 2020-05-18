@@ -23,5 +23,4 @@ fun AppCompatActivity.requestPermissions(code: Int, vararg permissions: String):
     } else {
         true
     }
-
 }
