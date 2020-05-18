@@ -18,7 +18,7 @@ class BlankViewModel @Inject constructor(private val apiClient: ApiClient): Base
     val listData: MutableLiveData<List<Post>> = MutableLiveData()
 
     fun getData() {
-        composite.add(Observable.timer(3, TimeUnit.SECONDS)
+        composite.add(Observable.timer(1, TimeUnit.SECONDS)
             .concatMap { apiClient.getPosts()}
             .doOnSubscribe { showLoading() }
             .doOnTerminate { dismissLoading() }

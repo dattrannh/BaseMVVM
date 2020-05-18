@@ -20,7 +20,6 @@ class MainViewModel @Inject constructor(private val apiClient: ApiClient): BaseV
 
     fun getData() {
         composite.add(apiClient.getPosts()
-            .delay(10, TimeUnit.SECONDS)
             .doOnSubscribe { showLoading() }
             .doFinally { dismissLoading() }
             .observeOn(AndroidSchedulers.mainThread())

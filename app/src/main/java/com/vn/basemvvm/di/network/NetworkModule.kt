@@ -33,7 +33,7 @@ object NetworkModule {
         return retrofit.create(ApiClient::class.java)
     }
 
-//    @Singleton
+    @Singleton
     @Provides
     fun provideRetrofitInterface(httpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder().client(httpClient)
@@ -57,7 +57,6 @@ object NetworkModule {
     fun provideLoggingInterceptor() =
         HttpLoggingInterceptor().apply { level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE }
 
-    @Reusable
     @Provides
     fun listenerResponse(storage: LocalStorage) = object : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response? {

@@ -45,7 +45,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         mView = layoutInflater.inflate(layoutId, null)
         setContentView(mView)
         mHandler.postDelayed({
@@ -66,14 +66,16 @@ abstract class BaseActivity : AppCompatActivity() {
                     getString(R.string.no_internet)
                  else getString(R.string.unknown_internet)
 //                Toast.makeText(applicationContext, string, Toast.LENGTH_SHORT).show()
-                dismissLoading()
-                ConfirmDialog.show(supportFragmentManager, message = string, callback = {
-                    showLoading()
-                })
+                ConfirmDialog.show(supportFragmentManager, message = string)
             } else {
                 handleResponse(statusCode, error.cause)
             }
         }
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 
     override fun onStop() {
@@ -92,6 +94,7 @@ abstract class BaseActivity : AppCompatActivity() {
         supportFragmentManager.fragments.forEach {
             supportFragmentManager.beginTransaction().remove(it).commit()
         }
+        progressDialog = null
         super.onDestroy()
     }
 

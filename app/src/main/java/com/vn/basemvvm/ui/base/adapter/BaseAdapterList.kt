@@ -63,9 +63,9 @@ open class BaseAdapterList<D: Any, V: ViewDataBinding>(val layoutId: ((Int) -> I
         notifyDataSetChanged()
     }
 
-    override fun onViewDetachedFromWindow(holder: BaseViewHolder<D, V>) {
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
         onClickedItem = null
-        super.onViewDetachedFromWindow(holder)
     }
 }
 

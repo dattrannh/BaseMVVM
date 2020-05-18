@@ -69,6 +69,8 @@ class MainActivity: BaseActivityBiding<ActivityMainBinding, MainViewModel>() {
         viewModel.getData()
         viewModel.adapter.onClickedItem = {position, item ->
             Log.d("myInfo", "${position}")
+            pushFragment(BlankFragment::class, bundleOf("1" to screen))
+            screen += 1
         }
 //        NetworkListener(applicationContext).observe(this, Observer { isConnected ->
 //            Log.d("myInfo isConnected = ", "" + isConnected)

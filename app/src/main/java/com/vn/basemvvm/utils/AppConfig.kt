@@ -36,4 +36,7 @@ object AppConfig {
 
     fun pxToDp(px: Int): Float =
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, px.toFloat(), displayMetrics)
+
+    fun dpToSp(px: Int): Float =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, px.toFloat(), displayMetrics)
 }
