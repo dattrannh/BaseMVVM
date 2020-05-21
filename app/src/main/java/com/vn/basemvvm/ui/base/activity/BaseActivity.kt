@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
@@ -33,9 +34,9 @@ import kotlin.reflect.KClass
 abstract class BaseActivity : AppCompatActivity() {
 
     abstract val layoutId: Int
-    protected lateinit var mView: View
+    protected lateinit var view: View
     private var listTagFragments = ArrayDeque<String>()
-    private val mHandler = Handler(Looper.getMainLooper())
+    protected val mHandler = Handler(Looper.getMainLooper())
     var delayMillis = 500L
     private var progressDialog: ProgressDialog? = null
     private var isLoading = false
@@ -46,14 +47,24 @@ abstract class BaseActivity : AppCompatActivity() {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        mView = layoutInflater.inflate(layoutId, null)
-        setContentView(mView)
+        view = layoutInflater.inflate(layoutId, null)
+        setContentView(view)
+        view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                viewDidLoad()
+            }
+        })
         mHandler.postDelayed({
             initDelayed()
         }, delayMillis)
     }
 
     open fun initDelayed() {
+
+    }
+
+    open fun viewDidLoad() {
 
     }
 

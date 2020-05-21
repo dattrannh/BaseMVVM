@@ -16,7 +16,7 @@ abstract class BaseActivityBiding<T: ViewDataBinding, V: BaseViewModel> : BaseAc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataBinding = DataBindingUtil.bind(mView)!!
+        dataBinding = DataBindingUtil.bind(view)!!
         dataBinding.lifecycleOwner = this
         @Suppress("UNCHECKED_CAST")
         val clazz: Class<V> = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<V>

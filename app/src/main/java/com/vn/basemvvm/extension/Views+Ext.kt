@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.vn.basemvvm.utils.AppConfig.dpToPx
+import com.vn.basemvvm.utils.dpToPx
 
 fun <T : View> Activity.bind(@IdRes idRes: Int): Lazy<T> {
     @Suppress("UNCHECKED_CAST")

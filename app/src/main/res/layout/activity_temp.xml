@@ -10,7 +10,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@android:color/holo_blue_dark"
+        android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.TempActivity">
@@ -24,6 +24,35 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:layout_marginTop="200dp"-->
+<!--            app:cardCornerRadius="100dp"-->
+<!--            >-->
+            <com.vn.basemvvm.ui.custom.RoundedView
+                android:id="@+id/imageView"
+                android:layout_marginTop="200dp"
+                android:scaleType="fitXY"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:text="Button"
+                android:src="@drawable/bay"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cornerRadius="100dp"
+                app:borderWidth="1dp"
+               />
+<!--        </androidx.cardview.widget.CardView>-->
+
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

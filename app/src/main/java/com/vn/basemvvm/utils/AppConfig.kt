@@ -30,13 +30,13 @@ object AppConfig {
         val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
         return if (resourceId > 0) { context.resources.getDimensionPixelSize(resourceId) } else 0
     }
-
-    fun dpToPx(dp: Float): Int =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics).toInt()
-
-    fun pxToDp(px: Int): Float =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, px.toFloat(), displayMetrics)
-
-    fun dpToSp(px: Int): Float =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, px.toFloat(), displayMetrics)
 }
+
+fun dpToPx(dp: Float): Int =
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, AppConfig.displayMetrics).toInt()
+
+fun pxToDp(px: Int): Float =
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, px.toFloat(), AppConfig.displayMetrics)
+
+fun dpToSp(px: Int): Float =
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, px.toFloat(), AppConfig.displayMetrics)

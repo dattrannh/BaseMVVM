@@ -15,6 +15,7 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.widget.ImageViewCompat
 import com.vn.basemvvm.ui.custom.RoundedImageView
 import com.vn.basemvvm.utils.AppConfig
+import com.vn.basemvvm.utils.dpToSp
 import kotlin.math.min
 
 class RoundedImageView : AppCompatImageView {
@@ -22,7 +23,7 @@ class RoundedImageView : AppCompatImageView {
     val paintText: Paint by lazy {
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.color = Color.BLACK
-        paint.textSize = AppConfig.dpToSp(16)
+        paint.textSize = dpToSp(16)
         paint
     }
 

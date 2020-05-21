@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -43,6 +44,12 @@ abstract class BaseFragment : Fragment() {
         val view = inflater.inflate(layoutId, container, false)
         view.isClickable = true
         view.isFocusable = true
+        view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                viewDidLoad()
+            }
+        })
         return view
     }
 
@@ -52,6 +59,9 @@ abstract class BaseFragment : Fragment() {
         init(view)
     }
 
+    open fun viewDidLoad() {
+
+    }
 
     inline fun <reified T : ViewModel> injectViewModel(): T {
         return ViewModelProvider(this, factory)[T::class.java]
