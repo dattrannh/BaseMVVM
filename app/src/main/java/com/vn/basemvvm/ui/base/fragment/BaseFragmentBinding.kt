@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
 import com.vn.basemvvm.ui.base.viewmodel.BaseViewModel
-import com.vn.basemvvm.ui.base.activity.BaseActivityBiding
+import com.vn.basemvvm.ui.base.activity.BaseActivityBinding
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragmentBinding<T: ViewDataBinding, V: BaseViewModel>: BaseFragment() {
@@ -25,9 +27,18 @@ abstract class BaseFragmentBinding<T: ViewDataBinding, V: BaseViewModel>: BaseFr
         return view
     }
 
-    open fun setShowLoading() {
-        val ac = activity as? BaseActivityBiding<*, *>
-            ?: return
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.toastLiveData.observe(this,  Observer {
+            val con = context ?: return@Observer
+            Toast.makeText(con, it, Toast.LENGTH_SHORT).show()
+        })
+        setShowLoading()
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    fun setShowLoading() {
+        val ac = activity as? BaseActivityBinding<*, *> ?: return
         viewModel.progressDialog = ac.viewModel.progressDialog
     }
 

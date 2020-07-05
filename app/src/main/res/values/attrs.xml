@@ -13,4 +13,14 @@
         <attr name="bigBlurRadius" format="float" />
         <attr name="smallBlurRadius" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="IndicatorView">
+        <attr name="radius" format="dimension" />
+        <attr name="spacing" format="dimension" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="color" format="color" />
+        <attr name="selectedColor" format="color" />
+        <attr name="styleStroke" format="boolean" />
+
+    </declare-styleable>
 </resources>

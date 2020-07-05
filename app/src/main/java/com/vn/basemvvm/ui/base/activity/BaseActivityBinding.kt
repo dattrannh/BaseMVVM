@@ -2,6 +2,7 @@
 package com.vn.basemvvm.ui.base.activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -9,7 +10,7 @@ import com.vn.basemvvm.ui.base.viewmodel.BaseViewModel
 import java.lang.reflect.ParameterizedType
 
 
-abstract class BaseActivityBiding<T: ViewDataBinding, V: BaseViewModel> : BaseActivity() {
+abstract class BaseActivityBinding<T: ViewDataBinding, V: BaseViewModel> : BaseActivity() {
 
     open lateinit var dataBinding: T
     open lateinit var viewModel: V
@@ -24,6 +25,9 @@ abstract class BaseActivityBiding<T: ViewDataBinding, V: BaseViewModel> : BaseAc
         viewModel.progressDialog.observe(this, Observer {
             if (it.status) showLoading(it.touchOutside, it.canGoBack)
              else dismissLoading()
+        })
+        viewModel.toastLiveData.observe(this,  Observer {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         })
     }
 

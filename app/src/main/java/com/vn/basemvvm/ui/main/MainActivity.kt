@@ -1,10 +1,8 @@
 package com.vn.basemvvm.ui.main
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
@@ -12,26 +10,18 @@ import android.os.Bundle
 import android.provider.BlockedNumberContract.BlockedNumbers
 import android.provider.ContactsContract
 import android.util.Log
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.reflect.TypeToken
 import com.vn.basemvvm.R
-import com.vn.basemvvm.data.model.Post
 import com.vn.basemvvm.databinding.ActivityMainBinding
 import com.vn.basemvvm.di.storage.frefs.LocalStorage
-import com.vn.basemvvm.extension.requestPermissions
-import com.vn.basemvvm.ui.base.activity.BaseActivityBiding
+import com.vn.basemvvm.ui.base.activity.BaseActivityBinding
 import com.vn.basemvvm.ui.blank.BlankFragment
-import com.vn.basemvvm.utils.Constants
-import com.vn.basemvvm.utils.DownloadService
 import com.vn.basemvvm.utils.notification.NotificationCenter
-import com.vn.basemvvm.utils.rx.RxBus
 import javax.inject.Inject
 
 
-class MainActivity: BaseActivityBiding<ActivityMainBinding, MainViewModel>() {
+class MainActivity: BaseActivityBinding<ActivityMainBinding, MainViewModel>() {
 
     @Inject
     lateinit var storage: LocalStorage

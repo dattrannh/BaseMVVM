@@ -8,6 +8,7 @@ import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
@@ -101,11 +102,12 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        progressDialog?.dismiss()
+        progressDialog = null
         mHandler.removeCallbacksAndMessages(null)
         supportFragmentManager.fragments.forEach {
             supportFragmentManager.beginTransaction().remove(it).commit()
         }
-        progressDialog = null
         super.onDestroy()
     }
 
@@ -183,6 +185,7 @@ abstract class BaseActivity : AppCompatActivity() {
             .add(android.R.id.content, fragment, mTag)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commitNow()
+
         listTagFragments.push(mTag)
     }
 

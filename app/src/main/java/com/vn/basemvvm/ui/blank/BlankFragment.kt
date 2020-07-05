@@ -29,7 +29,6 @@ class BlankFragment : BaseFragmentBinding<BlankFragmentBinding, BlankViewModel>(
 
     override fun init(view: View) {
         super.init(view)
-        setShowLoading()
         localStorage.authorization = Random.nextInt(20000).toString()
         val color = Color.rgb(100 + Random.nextInt(155), 100 + Random.nextInt(155), 100 + Random.nextInt(155))
         view.setBackgroundColor(color)

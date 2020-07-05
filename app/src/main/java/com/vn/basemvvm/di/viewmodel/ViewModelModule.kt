@@ -2,7 +2,7 @@ package com.vn.basemvvm.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.vn.basemvvm.ui.TempViewModel
+import com.vn.basemvvm.ui.temp.TempViewModel
 import com.vn.basemvvm.ui.blank.BlankViewModel
 import com.vn.basemvvm.ui.main.MainViewModel
 import dagger.Binds

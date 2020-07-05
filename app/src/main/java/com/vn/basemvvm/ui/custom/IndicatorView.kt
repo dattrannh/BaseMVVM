@@ -6,35 +6,54 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import com.vn.basemvvm.R
 import com.vn.basemvvm.utils.dp2Px
+import com.vn.basemvvm.utils.dpToPx
 
 class IndicatorView: View {
 
-    val paintStroke = Paint(Paint.ANTI_ALIAS_FLAG)
-    val paintCircle = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val paintStroke = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val paintCircle = Paint(Paint.ANTI_ALIAS_FLAG)
 
     var count = 5
-    var radius: Float = dp2Px(10f)
-    var spacing: Float = dp2Px(5f)
     var currentPosition = 0
     var progress: Float = 0f
 
-    constructor(context: Context?) : this(context, null)
-    constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
+    private var radius: Float = dp2Px(10f)
+    private var spacing: Float = dp2Px(5f)
+    private var strokeWidth: Float = dp2Px(1f)
+
+    private var strokeColor = Color.BLACK
+    private var selectedColor =  Color.BLUE
+
+    private var isStyleStroke = true
+
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr
     ) {
-        setup(attrs)
+        setup(context, attrs)
     }
 
-    fun setup(attrs: AttributeSet?) {
-        paintStroke.color = Color.BLACK
-        paintStroke.strokeWidth = dp2Px(1f)
-            paintStroke.style = Paint.Style.STROKE
+    private fun setup(context: Context, attrs: AttributeSet?) {
+        if (attrs != null)  {
+            val array = context.obtainStyledAttributes(attrs,  R.styleable.IndicatorView)
+            radius = array.getDimensionPixelOffset(R.styleable.IndicatorView_radius, dpToPx(5f)).toFloat()
+            spacing = array.getDimensionPixelOffset(R.styleable.IndicatorView_spacing, dpToPx(3f)).toFloat()
+            strokeWidth = array.getDimensionPixelOffset(R.styleable.IndicatorView_strokeWidth, dpToPx(1f)).toFloat()
+            strokeColor = array.getColor(R.styleable.IndicatorView_color, Color.BLACK)
+            selectedColor = array.getColor(R.styleable.IndicatorView_selectedColor, Color.BLUE)
+            isStyleStroke = array.getBoolean(R.styleable.IndicatorView_styleStroke, true)
+            array.recycle()
+        }
+        paintStroke.color = strokeColor
+        paintStroke.strokeWidth = strokeWidth
+        paintStroke.style = if (isStyleStroke) Paint.Style.STROKE else Paint.Style.FILL
         paintStroke.isDither = true
-        paintCircle.color = Color.BLACK
+        paintCircle.color = selectedColor
         paintCircle.style = Paint.Style.FILL
     }
 

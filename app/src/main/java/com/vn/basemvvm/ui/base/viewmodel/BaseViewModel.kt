@@ -9,6 +9,8 @@ open class BaseViewModel: ViewModel() {
 
     open val composite = CompositeDisposable()
     open var progressDialog = MutableLiveData<ProgressDialog.Configure>()
+    open var toastLiveData = MutableLiveData<String>()
+
     override fun onCleared() {
         composite.dispose()
         super.onCleared()
@@ -32,5 +34,8 @@ open class BaseViewModel: ViewModel() {
         ))
     }
 
+    fun showToast(string: String) {
+        toastLiveData.postValue(string)
+    }
 
 }

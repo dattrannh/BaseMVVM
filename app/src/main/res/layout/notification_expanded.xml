@@ -15,16 +15,14 @@
             android:layout_height="50dp"
             android:paddingBottom="1dp"
             android:paddingLeft="4dp"
-            android:paddingRight="6dp"
-            android:src="@drawable/exo_notification_small_icon"/>
+            android:paddingRight="6dp"/>
 
         <ImageView
             android:id="@+id/small_icon"
             android:layout_width="18.2dp"
             android:layout_height="18.2dp"
             android:layout_alignBottom="@id/big_icon"
-            android:layout_alignRight="@id/big_icon"
-            android:src="@drawable/exo_notification_small_icon"/>
+            android:layout_alignRight="@id/big_icon"/>
 
     </RelativeLayout>
 

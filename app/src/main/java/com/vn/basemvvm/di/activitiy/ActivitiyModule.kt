@@ -1,6 +1,6 @@
 package com.vn.basemvvm.di.activitiy
 
-import com.vn.basemvvm.ui.TempActivity
+import com.vn.basemvvm.ui.temp.TempActivity
 import com.vn.basemvvm.ui.main.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
