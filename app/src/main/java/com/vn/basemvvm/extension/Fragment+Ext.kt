@@ -15,11 +15,31 @@ fun Fragment.pushFragment(clazz: KClass<out Fragment>, bundle: Bundle? = null, a
 
 fun Fragment.popFragment(clazz: KClass<out Fragment>? = null, animate: Boolean = true) : Boolean {
     val activity = context as? BaseActivity ?: return false
+    if (clazz == null) {
+        activity.popFragment(this, animate)
+        return true
+    }
     return activity.popFragment(clazz = clazz, animate = animate)
 }
+
 fun Fragment.popToRoot(animate: Boolean = true) {
     val activity = context as? BaseActivity ?: return
     return activity.popToRoot(animate = animate)
+}
+
+fun Fragment.removeFragment(clazz: KClass<out Fragment>? = null, tag: String? = null) {
+    val activity = context as? BaseActivity ?: return
+    when {
+        clazz != null -> {
+            activity.removeFragment(clazz)
+        }
+        tag != null -> {
+            activity.removeFragment(tag)
+        }
+        else -> {
+            activity.removeFragment(this)
+        }
+    }
 }
 
 fun Fragment.transitionInLeft() {

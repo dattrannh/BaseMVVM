@@ -47,7 +47,7 @@ class MainActivity: BaseActivityBiding<ActivityMainBinding, MainViewModel>() {
 //        viewModel = injectViewModel()
         dataBinding.viewModel = viewModel
 //        val post = (0..3).map { Post(id = it, userId = 2, title = "danny", body = "hay hay")}
-//        storage.putData("new", 1)
+        storage.putData("new", 1)
 //        dataBinding.button.setOnClickListener {
 ////            storage.setString(javaClass.simpleName, name.text.toString() + " - " + pass.text.toString())
 ////            show.text = storage.getString(javaClass.simpleName)

@@ -134,7 +134,7 @@ abstract class BaseActivity : AppCompatActivity() {
         while (last != null) {
             val fragment = supportFm.findFragmentByTag(last)
             if (fragment != null) {
-                popFm(fragment, false)
+                popFragment(fragment, false)
             }
             last = listTagFragments.poll()
         }
@@ -149,26 +149,30 @@ abstract class BaseActivity : AppCompatActivity() {
         if (fragment == null) {
             fragment = supportFragmentManager.findFragmentByTag(tag ?: listTagFragments.peek()) ?: return false
         }
-        listTagFragments.poll()
+        listTagFragments.remove(fragment.arguments?.getString(TAG_NAME_FRAGMENT))
         supportFragmentManager.findFragmentByTag(tag ?: listTagFragments.peek())?.transitionInLeft()
-        popFm(fragment, animate)
+        popFragment(fragment, animate)
         return true
     }
 
-    private fun popFm(fragment: Fragment, animate: Boolean) {
+    fun popFragment(fragment: Fragment, animate: Boolean) {
+        listTagFragments.remove(fragment.arguments?.getString(TAG_NAME_FRAGMENT))
         val trans = supportFragmentManager
             .beginTransaction()
             .disallowAddToBackStack()
-        if (animate) {
+        if (animate && fragment.arguments?.getBoolean(TAG_PUSH_ANIMATE_FRAGMENT) == true) {
             trans.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right)
         }
         trans.remove(fragment).commitNow()
     }
 
     open fun pushFragment(clazz: KClass<out Fragment>, bundle: Bundle? = null, tag: String? = null, animate: Boolean = true) {
-        val fragment = clazz.java.newInstance()
-        fragment.arguments = bundle
         val mTag = tag ?: clazz.java.simpleName  + "${System.nanoTime()}"
+        val fragment = clazz.java.newInstance()
+        val mBundle = bundle ?: Bundle()
+        mBundle.putBoolean(TAG_PUSH_ANIMATE_FRAGMENT, animate)
+        mBundle.putString(TAG_NAME_FRAGMENT, mTag)
+        fragment.arguments = mBundle
         supportFragmentManager.findFragmentByTag(listTagFragments.peek())?.transitionOutLeft()
         val trans = supportFragmentManager
             .beginTransaction()
@@ -180,6 +184,37 @@ abstract class BaseActivity : AppCompatActivity() {
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commitNow()
         listTagFragments.push(mTag)
+    }
+
+    open fun addFragment(viewId: Int, clazz: KClass<out Fragment>, bundle: Bundle? = null, tag: String? = null) {
+        val mTag = tag ?: clazz.java.simpleName  + "${System.nanoTime()}"
+        val fragment = clazz.java.newInstance()
+        val mBundle = bundle ?: Bundle()
+        mBundle.putString(TAG_NAME_FRAGMENT, mTag)
+        fragment.arguments = mBundle
+        supportFragmentManager
+            .beginTransaction()
+            .disallowAddToBackStack()
+            .add(viewId, fragment, mTag)
+            .commitNow()
+    }
+
+    open fun removeFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .disallowAddToBackStack()
+            .remove(fragment)
+            .commitNow()
+    }
+
+    open fun removeFragment(tag: String) {
+        val fragment = supportFragmentManager.findFragmentByTag(tag) ?: return
+        removeFragment(fragment)
+    }
+
+    open fun removeFragment(clazz: KClass<out Fragment>) {
+        val fragment = supportFragmentManager.fragments.first { it.javaClass.simpleName == clazz.simpleName } ?: return
+        removeFragment(fragment)
     }
 
     //endregion
@@ -269,4 +304,10 @@ abstract class BaseActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
     //endregion
+
+    companion object {
+        const val TAG_PUSH_ANIMATE_FRAGMENT = "TAG_PUSH_ANIMATE_FRAGMENT"
+        const val TAG_NAME_FRAGMENT = "TAG_CLASS_NAME_FRAGMENT"
+
+    }
 }

@@ -4,10 +4,10 @@ import android.app.Application
 import com.vn.basemvvm.di.AppComponent
 import com.vn.basemvvm.di.DaggerAppComponent
 import com.vn.basemvvm.utils.AppConfig
-import com.vn.basemvvm.utils.network.NetworkUtils
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import timber.log.Timber
 import javax.inject.Inject
 
 class App: Application(), HasAndroidInjector {
@@ -21,6 +21,9 @@ class App: Application(), HasAndroidInjector {
         AppConfig.setup(applicationContext)
         component = DaggerAppComponent.factory().create(applicationContext)
         component.inject(this)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     override fun androidInjector(): AndroidInjector<Any> {

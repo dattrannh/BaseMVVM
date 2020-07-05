@@ -9,7 +9,7 @@ import javax.inject.Singleton
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
-@Singleton
+
 class SharedPreferencesStorage @Inject constructor(context: Context, @PreferenceInfo fileName: String): LocalStorage {
 
     private val sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)

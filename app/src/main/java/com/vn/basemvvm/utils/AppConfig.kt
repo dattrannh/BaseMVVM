@@ -35,6 +35,9 @@ object AppConfig {
 fun dpToPx(dp: Float): Int =
     TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, AppConfig.displayMetrics).toInt()
 
+fun dp2Px(dp: Float): Float =
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, AppConfig.displayMetrics)
+
 fun pxToDp(px: Int): Float =
     TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, px.toFloat(), AppConfig.displayMetrics)
 
